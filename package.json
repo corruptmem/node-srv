@@ -1,0 +1,43 @@
+{
+  "name": "srv",
+  "version": "0.0.1",
+  "description": "Helps you run multiple instances of your service, provides graceful, zero downtime restart on signals and file changes, and handles errors. Does not require a seperate command line tool, nor does it daemonise your process, for better integration into other process monitors such as upstart.",
+  "author": {
+    "name": "corruptmem",
+    "email": "me@corruptmem.org",
+    "url": "http://corruptmem.org"
+  },
+  "keywords": [
+    "process",
+    "error",
+    "uncaught",
+    "forever",
+    "sysadmin",
+    "development",
+    "restart",
+    "reload",
+    "watch",
+    "monitor"
+  ],
+  "bugs": "https://github.com/corruptmem/node-srv/issues",
+  "homepage": "https://github.com/corruptmem/node-srv",
+  "license": {
+      "type": "Zlib",
+      "url": "http://opensource.org/licenses/Zlib"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/corruptmem/node-srv.git"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+
+  "main": "./lib/srv.js",
+  "scripts": {
+    "prepublish": "./node_modules/coffee-script/bin/cake build"
+  },
+  "devDependencies": {
+    "coffee-script": "1.4.0"
+  }
+}
