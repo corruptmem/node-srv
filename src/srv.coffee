@@ -11,7 +11,7 @@ defaultOptions =
     timeout: 60000
 
   shutdown:
-    timeout: 1000
+    timeout: 15000
 
   restart:
     delay: 2000
@@ -25,7 +25,7 @@ module.exports = (func) ->
       console.log "Worker #{worker.id} disconnect"
 
     cluster.on 'fork', (worker) ->
-      console.log("Worker #{worker.id} forked")
+      console.log "Worker #{worker.id} forked with pid #{worker.process.pid}"
       timeouts[worker.id] = setTimeout (() -> failedToStart(worker)), options.worker.timeout
 
     cluster.on 'listening', (worker, address) ->
@@ -36,7 +36,14 @@ module.exports = (func) ->
         delete timeouts[worker.id]
 
     cluster.on 'exit', (worker, code, signal) ->
-      console.log "Worker #{worker.id} exit: #{code} #{signal}. Suicide? #{worker.suicide?}"
+      console.log "Worker #{worker.id} exit: #{code} #{signal}. Suicide? #{worker.suicide}"
+      if not worker.suicide
+        console.log "Forking new worker..."
+        cluster.fork()
+
+      if Object.keys(cluster.workers).length == 0
+        console.log "Graceful exit of all workers. Goodbye!"
+        process.exit(0)
 
     cluster.on 'online', (worker) ->
       console.log "Worker #{worker.id} is online "
@@ -46,18 +53,25 @@ module.exports = (func) ->
           delete timeouts[worker.id]
 
     failedToStart = (worker) ->
-      console.log "Worker #{worker.id} failed to start in a timely fashion. Retrying..."
+      console.log "Worker #{worker.id} failed to start. Retrying..."
       worker.destroy()
       setTimeout cluster.fork, options.restart.delay
 
     recycle = ->
+      #for id, worker of workers
+      #  (->
+      #    oldWorker = worker
+      #    newWorker = cluster.fork()
+      #    tworker.on 'disconnect', clearTimeout(timeout)
+      #    tworker.disconnect()
+      #          )()
       console.log "Recycling workers: NOT IMPLEMENTED!"
 
     shutdown = ->
       console.log "Graceful termination"
       cluster.disconnect () ->
-        console.log "All workers terminated. Goodbye!"
-        process.exit 0
+        console.log Object.keys(cluster.workers).length
+        console.log "All workers disconnected."
 
       setTimeout (->
         console.log "Took too long to shutdown gracefully, terminating workers."
@@ -76,5 +90,5 @@ module.exports = (func) ->
     console.log "Master ready #{process.pid}"
   else
     if options.worker.ignoreSigint
-      process.on "SIGINT", () -> console.log "Worker #{process.pid} ignoring SIGINT"
+      process.on "SIGINT", () -> console.log "Worker pid #{process.pid} ignoring SIGINT"
     func()
