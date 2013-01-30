@@ -37,6 +37,10 @@
   "scripts": {
     "prepublish": "./node_modules/coffee-script/bin/cake build"
   },
+  "dependencies": {
+    "winston": ">=0.6.2",
+    "underscore": ">=1.4.3"
+  },
   "devDependencies": {
     "coffee-script": "1.4.0"
   }
