@@ -4,11 +4,11 @@ defaultOptions =
   worker:
     count: 4
     ignoreSigint: true
-    requireListen: false
+    require: 'online'
     timeout: 2000
 
   recycle:
-    timeout: 60000
+    timeout: 5000
 
   shutdown:
     timeout: 15000
@@ -47,7 +47,7 @@ module.exports = (func) ->
 
     cluster.on 'online', (worker) ->
       console.log "Worker #{worker.id} is online "
-      if not options.worker.requireListen and worker.id of timeouts
+      if options.worker.require == 'online' and worker.id of timeouts
           console.log "Clearing timeout for #{worker.id}"
           clearTimeout timeouts[worker.id]
           delete timeouts[worker.id]
@@ -58,14 +58,31 @@ module.exports = (func) ->
       setTimeout cluster.fork, options.restart.delay
 
     recycle = ->
-      #for id, worker of workers
-      #  (->
-      #    oldWorker = worker
-      #    newWorker = cluster.fork()
-      #    tworker.on 'disconnect', clearTimeout(timeout)
-      #    tworker.disconnect()
-      #          )()
-      console.log "Recycling workers: NOT IMPLEMENTED!"
+      console.log "Recycle: Starting recycle - this may take some time."
+      remaining = (worker for id, worker of cluster.workers)
+      
+      replace = ->
+        worker = remaining.pop()
+        if not worker?
+          console.log "Recycle: Complete"
+          return
+
+        console.log "Recycle: Forking"
+        cluster.fork()
+        cluster.once options.worker.require, ->
+          console.log "Recycle: New fork ready, shutting down worker"
+          timeout = setTimeout (->
+            console.log "Recycle: Took too long - terminating worker #{worker.id}"
+            worker.destroy()
+          ), options.recycle.timeout
+
+          worker.disconnect()
+          worker.on 'exit', ->
+            console.log("Recycle: Worker #{worker.id} exited")
+            clearTimeout(timeout)
+            replace()
+
+      replace()
 
     shutdown = ->
       console.log "Graceful termination"
