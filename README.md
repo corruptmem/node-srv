@@ -11,7 +11,8 @@ srv is a very thin layer ontop of the node 0.8 [cluster API](http://nodejs.org/a
 Unlike other similar modules ([forever](https://github.com/nodejitsu/forever), [always](https://github.com/edwardhotchkiss/always) and [naught](https://github.com/indabamusic/naught)), srv:
 * Does not require a seperate command line tool: management is done using UNIX signals and process monitoring
 * Does not require a global package install
-* Won't daemonise your process - I think this is best done using another process monitor, usually built into the system (see below). * Won't write PIDs 
+* Won't daemonise your process - I think this is best done using another process monitor, usually built into the system (see below). 
+* Won't write PIDs 
 * Won't handle log files for you
 * Does not implement a complicated event system and instead tries to built ontop of what node and UNIX provide
 * Requires integration at development time
