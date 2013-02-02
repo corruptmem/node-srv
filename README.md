@@ -68,7 +68,52 @@ When you press CTRL+C, it will output the following then terminate:
 
 Options
 -------
-TBC
+Pass these in as a JSON object tree as the first argument to the srv call. 
+
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Default</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>worker.count</td>
+        <td>4</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>worker.ignoreSigint</td>
+        <td>true</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>worker.require</td>
+        <td>'online'</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>worker.timeout</td>
+        <td>2000</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>recycle.timeout</td>
+        <td>15000</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>shutdown.timeout</td>
+        <td>15000</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>restart.delay</td>
+        <td>5000</td>
+        <td></td>
+    </tr>
+</table>
+
+**Note**: The dot in the property names above means sub-object.
 
 Signals and events
 ------------------
