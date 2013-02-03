@@ -79,37 +79,37 @@ Pass these in as a JSON object tree as the first argument to the srv call.
     <tr>
         <td>worker.count</td>
         <td>4</td>
-        <td></td>
+        <td>Number of worker processes to spawn</td>
     </tr>
     <tr>
         <td>worker.ignoreSigint</td>
         <td>true</td>
-        <td></td>
+        <td>Whether the worker should ignore SIGINT automatically.</td>
     </tr>
     <tr>
         <td>worker.require</td>
         <td>'online'</td>
-        <td></td>
+        <td>Must be either 'online' or 'listen'. Defines the state the worker must be in before we consider the process to have successfully started.</td>
     </tr>
     <tr>
         <td>worker.timeout</td>
         <td>2000</td>
-        <td></td>
+        <td>How long (ms) to wait for a successful startup before killing the worker and starting a new one.</td>
     </tr>
     <tr>
         <td>recycle.timeout</td>
         <td>15000</td>
-        <td></td>
+        <td>How long (ms) to wait for each worker to gracefully cleanup during a recycle.</td>
     </tr>
     <tr>
         <td>shutdown.timeout</td>
         <td>15000</td>
-        <td></td>
+        <td>How long (ms) to wait for each worker to gracefully cleanup during a shutdown.</td>
     </tr>
     <tr>
         <td>restart.delay</td>
         <td>5000</td>
-        <td></td>
+        <td>How long (ms) to wait after a worker crashes before starting a new one.</td>
     </tr>
 </table>
 
