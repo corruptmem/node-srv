@@ -117,7 +117,8 @@ Pass these in as a JSON object tree as the first argument to the srv call.
 
 Signals and events
 ------------------
-TBC
+**SIGINT** (Ctrl+C), **SIGTERM**: Graceful shutdown 
+**SIGHUP**: Recycle workers
 
 Process monitoring 
 ------------------
