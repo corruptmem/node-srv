@@ -117,8 +117,12 @@ Pass these in as a JSON object tree as the first argument to the srv call.
 
 Signals and events
 ------------------
+**UNIX**:
 * **SIGINT** (Ctrl+C), **SIGTERM**: Graceful shutdown 
 * **SIGHUP**: Recycle workers
+
+**Node.JS**:
+* cluster.worker.on('disconnect', func): Called when master disconnects from worker
 
 Process monitoring 
 ------------------
