@@ -153,4 +153,6 @@ It should go some way toward ironing out latency spikes and would be a good seco
 
 Contributing
 ------------
-TBC
+* Send pull requests
+* Report issues on the Github issue tracker.
+* Email me@corruptmem.org
